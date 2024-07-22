@@ -3,6 +3,13 @@ const userType = {
     SUPPLIER: 'SUPPLIER'
 }
 
+const amountType = {
+    CREDIT: 'CREDIT',
+    PAY: 'PAY',
+    INVOICE: 'INVOICE'
+}
+
 module.exports = {
-    userType
+    userType,
+    amountType
 }

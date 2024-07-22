@@ -1,26 +1,32 @@
+const { Types } = require("mongoose")
 const { responseMessage, randomFixedInteger } = require("../../../../helper/comFunction")
 const { userType: typeOfUser } = require("../../../../helper/enums")
-const UserModel = require("../model/userModel")
+const UserModel = require("../../users/model/userModel")
+const TransactionModel = require("../model/transactionModel")
 
-const createUser = async (req, res) => {
+const createTransaction = async (req, res) => {
     try {
-        const { firstName, surname, phone, email, address, userType } = req.body
+        const userId = req.decoded._id
+        const { amountType, amount, comments, details } = req.body
 
-        const newClient = await UserModel.create({
-            client_code: `CS${await randomFixedInteger(8)}`,
-            firstName,
-            surname,
-            phone,
-            email,
-            address,
-            userType: userType?.toUpperCase() === 'RECEIVABLE' ? typeOfUser.RECEIVABLE : typeOfUser.SUPPLIER
+        const newTrans = await TransactionModel.create({
+            userId: new Types.ObjectId(userId),
+            remainAmount: amount,
+            details: details,
+            payHistory: [
+                {
+                    amount: amount,
+                    amountType: amountType.toUpperCase(),
+                    comments: comments,
+                }
+            ]
         })
 
-        if (!newClient) throw new Error('New client is not created.')
+        if (!newTrans) throw new Error(`${amountType} is not created.`)
 
         res.status(201).json({
-            meta: { message: 'New User is created successfully.', status: true },
-            data: newClient
+            meta: { message: `${amountType} is not created successfully.`, status: true },
+            data: newTrans
         })
     } catch (err) {
         responseMessage(res, 500, false, err.message)
@@ -79,30 +85,34 @@ const getUserDetails = async (req, res) => {
     }
 };
 
-const updateUserDetails = async (req, res) => {
+const payTransaction = async (req, res) => {
     try {
-        const { userId } = req.params;
-        const { firstName, surname, phone, address } = req.body
+        const { transId } = req.params;
+        const { amountType, amount, comments, details } = req.body
 
         let query = {
-            _id: userId
+            _id: transId
         };
 
+        let userTrans = await TransactionModel.findOne(query);
+        if (!userTrans) throw new Error('user transaction are not fetched.');
 
+        userTrans.payHistory.push({
+            amount: amount,
+            amountType: amountType?.toUpperCase(),
+            comments: comments,
+        })
+        userTrans.remainAmount = userTrans.remainAmount - amount
 
-        let user = await UserModel.findOne(query);
-        if (!user) throw new Error('user data are not fetched.');
+        if(userTrans.remainAmount <= 0){
+            userTrans.isFullPayment = true
+        }
 
-        user.firstName = firstName || user.firstName
-        user.surname = surname || user.surname
-        user.phone = phone || user.phone
-        user.address = address || user.address
-
-        user = await user.save()
+        userTrans = await userTrans.save()
 
         res.status(200).json({
-            meta: { message: 'User details are updated successfully.', status: true },
-            data: user,
+            meta: { message: 'User Transaction are updated successfully.', status: true },
+            data: userTrans,
         });
     } catch (err) {
         responseMessage(res, 500, false, err.message);
@@ -110,8 +120,8 @@ const updateUserDetails = async (req, res) => {
 };
 
 module.exports = {
-    createUser,
+    createTransaction,
     getUsers,
     getUserDetails,
-    updateUserDetails
+    payTransaction
 }
