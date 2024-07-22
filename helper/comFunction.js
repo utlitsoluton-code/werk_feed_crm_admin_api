@@ -16,12 +16,24 @@ const bcryptfun = async (password) => {
 var randomFixedInteger = function (length) {
   return Math.floor(
     Math.pow(10, length - 1) +
-      Math.random() * (Math.pow(10, length) - Math.pow(10, length - 1) - 1)
+    Math.random() * (Math.pow(10, length) - Math.pow(10, length - 1) - 1)
   );
 };
+
+const responseMessage = (response, statusCode, statusType, message) => {
+  return response.status(statusCode || 500).json(
+    {
+      meta: {
+        message: message || "Something went wrong!",
+        status: statusType
+      }
+    }
+  )
+}
 
 module.exports = {
   jwtToken,
   bcryptfun,
-  randomFixedInteger
+  randomFixedInteger,
+  responseMessage
 };
