@@ -28,27 +28,35 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
     try {
-        const { type } = req.query
+        const { type, page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
 
-        let users
-        if (!type) {
-            users = await UserModel.find()
-        } else if (type?.toUpperCase() === typeOfUser.RECEIVABLE) {
-            users = await UserModel.find({ userType: typeOfUser.RECEIVABLE })
-        } else {
-            users = await UserModel.find({ userType: typeOfUser.SUPPLIER })
+        let query = {};
+        if (type) {
+            if (type.toUpperCase() === typeOfUser.RECEIVABLE) {
+                query.userType = typeOfUser.RECEIVABLE;
+            } else if (type.toUpperCase() === typeOfUser.SUPPLIER) {
+                query.userType = typeOfUser.SUPPLIER;
+            }
         }
 
-        if (!users) throw new Error('users are not fetched.')
+        const usersPromise = UserModel.find(query).skip(skip).limit(limit);
+        const countPromise = UserModel.countDocuments(query);
+
+        const [users, totalLength] = await Promise.all([usersPromise, countPromise]);
+
+        if (!users) throw new Error('users are not fetched.');
 
         res.status(201).json({
             meta: { message: '', status: true },
-            data: users
-        })
+            page,
+            totalLength,
+            data: users,
+        });
     } catch (err) {
-        responseMessage(res, 500, false, err.message)
+        responseMessage(res, 500, false, err.message);
     }
-}
+};
 
 module.exports = {
     createUser,

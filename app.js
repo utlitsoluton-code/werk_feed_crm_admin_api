@@ -28,6 +28,11 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/static", express.static(path.join(__dirname, "public")));
+
+app.get('/', (req,res)=> {
+  res.send('<h1>Server is running...</h1>')
+})
+
 app.use(basePath, baseRouter);
 app.use((req, res, next) => {
   const error = new Error("route Not found..");

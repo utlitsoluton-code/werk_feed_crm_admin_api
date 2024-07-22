@@ -42,6 +42,12 @@ const getUsersJOIMiddleware = (req, res, next) => {
             type: Joi.string().trim().optional().messages({
                 "any.required": "User type is required!, value must be RECEIVABLE or SUPPLIER"
             }),
+            page: Joi.string().trim().optional().messages({
+                "any.required": "User type is required!, value must be RECEIVABLE or SUPPLIER"
+            }),
+            limit: Joi.string().trim().optional().messages({
+                "any.required": "User type is required!, value must be RECEIVABLE or SUPPLIER"
+            }),
         }
     )
 
