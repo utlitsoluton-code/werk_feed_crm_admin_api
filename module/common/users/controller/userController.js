@@ -1,4 +1,4 @@
-const { responseMessage } = require("../../../../helper/comFunction")
+const { responseMessage, randomFixedInteger } = require("../../../../helper/comFunction")
 const { userType: typeOfUser } = require("../../../../helper/enums")
 const UserModel = require("../model/userModel")
 
@@ -7,6 +7,7 @@ const createUser = async (req, res) => {
         const { firstName, surname, phone, email, address, userType } = req.body
 
         const newClient = await UserModel.create({
+            client_code: `CS${await randomFixedInteger(8)}`,
             firstName,
             surname,
             phone,

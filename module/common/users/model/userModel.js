@@ -4,6 +4,7 @@ const { userType } = require('../../../../helper/enums')
 module.exports = mongoose.model('user', 
     new mongoose.Schema(
         {
+            client_code: { type: String },
             userType: {
                 type: String,
                 enum: [userType.RECEIVABLE, userType.SUPPLIER],
