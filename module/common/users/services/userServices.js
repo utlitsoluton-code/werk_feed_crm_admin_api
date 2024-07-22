@@ -60,7 +60,37 @@ const getUsersJOIMiddleware = (req, res, next) => {
     }
 }
 
+const updateUserJOIMiddleware = (req, res, next) => {
+    const JoiModel = Joi.object().keys(
+        {
+            firstName: Joi.string().trim().optional().messages({
+                "any.required": "First name is required!"
+            }),
+            surname: Joi.string().trim().optional().messages({
+                "any.required": "Surname is required!"
+            }),
+            phone: Joi.string().length(10).regex(/^[0-9]{10}$/).optional().messages({
+                "any.required": "mobile is required",
+                "string.pattern.base": `Invalid mobile number`,
+            }),
+            address: Joi.string().trim().optional().messages({
+                "any.required": "Address is required!"
+            })
+        }
+    )
+
+    const result = JoiModel.validate(req.body)
+
+    if (result.error) {
+        responseMessage(res, 400, false, result.error.details[0].message)
+    } else {
+        return next()
+    }
+
+}
+
 module.exports = {
     createUserJOIMiddleware,
-    getUsersJOIMiddleware
+    getUsersJOIMiddleware,
+    updateUserJOIMiddleware
 }

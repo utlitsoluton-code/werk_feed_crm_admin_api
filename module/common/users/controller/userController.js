@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
         if (!newClient) throw new Error('New client is not created.')
 
         res.status(201).json({
-            meta: { message: '', status: true },
+            meta: { message: 'New User is created successfully.', status: true },
             data: newClient
         })
     } catch (err) {
@@ -47,8 +47,8 @@ const getUsers = async (req, res) => {
 
         if (!users) throw new Error('users are not fetched.');
 
-        res.status(201).json({
-            meta: { message: '', status: true },
+        res.status(200).json({
+            meta: { message: 'All users are fetched successfully.', status: true },
             page,
             totalLength,
             data: users,
@@ -58,7 +58,59 @@ const getUsers = async (req, res) => {
     }
 };
 
+const getUserDetails = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        let query = {
+            _id: userId
+        };
+
+        const user = await UserModel.findOne(query);
+        if (!user) throw new Error('user data are not fetched.');
+
+        res.status(200).json({
+            meta: { message: 'User details are fetched successfully.', status: true },
+            data: user,
+        });
+    } catch (err) {
+        responseMessage(res, 500, false, err.message);
+    }
+};
+
+const updateUserDetails = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { firstName, surname, phone, address } = req.body
+
+        let query = {
+            _id: userId
+        };
+
+
+
+        let user = await UserModel.findOne(query);
+        if (!user) throw new Error('user data are not fetched.');
+
+        user.firstName = firstName || user.firstName
+        user.surname = surname || user.surname
+        user.phone = phone || user.phone
+        user.address = address || user.address
+
+        user = await user.save()
+
+        res.status(200).json({
+            meta: { message: 'User details are fetched successfully.', status: true },
+            data: user,
+        });
+    } catch (err) {
+        responseMessage(res, 500, false, err.message);
+    }
+};
+
 module.exports = {
     createUser,
-    getUsers
+    getUsers,
+    getUserDetails,
+    updateUserDetails
 }
