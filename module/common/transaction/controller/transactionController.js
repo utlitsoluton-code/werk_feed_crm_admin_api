@@ -1,13 +1,13 @@
 const { Types } = require("mongoose")
 const { responseMessage, randomFixedInteger } = require("../../../../helper/comFunction")
-const { userType: typeOfUser } = require("../../../../helper/enums")
+const { userType: typeOfUser, amountType } = require("../../../../helper/enums")
 const UserModel = require("../../users/model/userModel")
 const TransactionModel = require("../model/transactionModel")
 
 const createTransaction = async (req, res) => {
     try {
-        const userId = req.decoded._id
-        const { amountType, amount, comments, details } = req.body
+
+        const { userId, amountType, amount, comments, details } = req.body
 
         const newTrans = await TransactionModel.create({
             userId: new Types.ObjectId(userId),
@@ -33,57 +33,87 @@ const createTransaction = async (req, res) => {
     }
 }
 
-const getUsers = async (req, res) => {
+const getAllTranactions = async (req, res) => {
     try {
         const { type, page = 1, limit = 10 } = req.query;
         const skip = (page - 1) * limit;
 
         let query = {};
         if (type) {
-            if (type.toUpperCase() === typeOfUser.RECEIVABLE) {
-                query.userType = typeOfUser.RECEIVABLE;
-            } else if (type.toUpperCase() === typeOfUser.SUPPLIER) {
-                query.userType = typeOfUser.SUPPLIER;
+            if (type.toUpperCase() === amountType.CREDIT) {
+                query = { "payHistory.amountType": amountType.CREDIT }
+            } else if (type.toUpperCase() === amountType.INVOICE) {
+                query = { "payHistory.amountType": amountType.INVOICE }
             }
         }
 
-        const usersPromise = UserModel.find(query).skip(skip).limit(limit);
-        const countPromise = UserModel.countDocuments(query);
+        console.log(query)
 
-        const [users, totalLength] = await Promise.all([usersPromise, countPromise]);
+        const transPromise = TransactionModel.find(query).sort({ updatedAt: -1 }).skip(skip).limit(limit);
+        const countPromise = TransactionModel.countDocuments(query);
 
-        if (!users) throw new Error('users are not fetched.');
+        const [trans, totalLength] = await Promise.all([transPromise, countPromise]);
+
+        if (!trans) throw new Error('transactions are not fetched.');
 
         res.status(200).json({
-            meta: { message: 'All users are fetched successfully.', status: true },
+            meta: { message: 'All transactions are fetched successfully.', status: true },
             page,
             totalLength,
-            data: users,
+            data: trans,
         });
     } catch (err) {
         responseMessage(res, 500, false, err.message);
     }
 };
 
-const getUserDetails = async (req, res) => {
+const getTransDetails = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const { transId } = req.params;
 
         let query = {
-            _id: userId
+            _id: transId
         };
 
-        const user = await UserModel.findOne(query);
-        if (!user) throw new Error('user data are not fetched.');
+        const transaction = await TransactionModel.findOne(query);
+        if (!transaction) throw new Error('transaction is not fetched.');
 
         res.status(200).json({
-            meta: { message: 'User details are fetched successfully.', status: true },
+            meta: { message: 'transaction is fetched successfully.', status: true },
             data: user,
         });
     } catch (err) {
         responseMessage(res, 500, false, err.message);
     }
 };
+
+const getTranactionsByUser = async (req,res) => {
+    try {
+        const { userId } = req.params;
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
+
+        let query = {
+            userId: userId
+        };
+
+        const transPromise = TransactionModel.find(query).skip(skip).limit(limit);
+        const countPromise = TransactionModel.countDocuments(query);
+
+        const [trans, totalLength] = await Promise.all([transPromise, countPromise]);
+
+        if (!trans) throw new Error('user transactions are not fetched.');
+
+        res.status(200).json({
+            meta: { message: 'User transactions are fetched successfully.', status: true },
+            page,
+            totalLength,
+            data: trans,
+        });
+    } catch (err) {
+        responseMessage(res, 500, false, err.message);
+    }
+}
 
 const payTransaction = async (req, res) => {
     try {
@@ -97,6 +127,7 @@ const payTransaction = async (req, res) => {
         let userTrans = await TransactionModel.findOne(query);
         if (!userTrans) throw new Error('user transaction are not fetched.');
 
+        userTrans.details = details || userTrans.details
         userTrans.payHistory.push({
             amount: amount,
             amountType: amountType?.toUpperCase(),
@@ -121,7 +152,8 @@ const payTransaction = async (req, res) => {
 
 module.exports = {
     createTransaction,
-    getUsers,
-    getUserDetails,
+    getAllTranactions,
+    getTransDetails,
+    getTranactionsByUser,
     payTransaction
 }

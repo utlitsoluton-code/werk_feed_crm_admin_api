@@ -4,6 +4,9 @@ const { responseMessage } = require("../../../../helper/comFunction")
 const createTransactionJOIMiddleware = (req, res, next) => {
     const JoiModel = Joi.object().keys(
         {
+            userId: Joi.string().trim().required().messages({
+                "any.required": "user Id is required!"
+            }),
             amountType: Joi.string().trim().required().messages({
                 "any.required": "Type of amount is required!"
             }),
@@ -28,7 +31,7 @@ const createTransactionJOIMiddleware = (req, res, next) => {
     }
 }
 
-const getUsersJOIMiddleware = (req, res, next) => {
+const getTransJOIMiddleware = (req, res, next) => {
     const JoiModel = Joi.object().keys(
         {
             type: Joi.string().trim().optional().messages({
@@ -82,6 +85,6 @@ const updateTransactionJOIMiddleware = (req, res, next) => {
 
 module.exports = {
     createTransactionJOIMiddleware,
-    getUsersJOIMiddleware,
+    getTransJOIMiddleware,
     updateTransactionJOIMiddleware
 }
