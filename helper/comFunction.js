@@ -8,6 +8,11 @@ const jwtToken = async function (body) {
   return token;
 };
 
+const verificationKey = async function (body) {
+  const token = jwt.sign(body, process.env.jwtSecretKey, { expiresIn: "10m" });
+  return token;
+};
+
 const bcryptfun = async (password) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -43,5 +48,6 @@ module.exports = {
   jwtToken,
   bcryptfun,
   randomFixedInteger,
-  responseMessage
+  responseMessage,
+  verificationKey
 };

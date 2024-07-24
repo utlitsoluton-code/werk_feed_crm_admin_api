@@ -7,7 +7,10 @@ const adminModel = mongoose.model(
     {
       roleId: { type: mongoose.Types.ObjectId },
       roleName: String,
-      name: String,
+      name: {
+        type:String,
+        default:'Super Admin'
+      },
       email: String,
       alternateMobile: String,
       password: String,
@@ -18,7 +21,10 @@ const adminModel = mongoose.model(
       },
       mobile: String,
       isLogin: { type: Boolean, default: false },
-      profilePic: String,
+      profilePic: {
+        type:String,
+        default:'https://w7.pngwing.com/pngs/798/436/png-transparent-computer-icons-user-profile-avatar-profile-heroes-black-profile-thumbnail.png'
+      },
       status: {
         type: String,
         enum: ["ACTIVE", "DEACTIVE"],
@@ -31,9 +37,6 @@ const adminModel = mongoose.model(
         country: String,
         postalCode: Number,
       },
-
-      createdAt: Number,
-      updatedAt: Number,
     },
     { timestamps: true }
   )
