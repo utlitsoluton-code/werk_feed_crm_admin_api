@@ -1,7 +1,7 @@
 const supplierModel = require('../model/supplierModel')
 
 const createSupplier = async (req, res) => {
-    const { payType, vendorType, amout, phone, email, name } = req.body;
+    const {  address, phone, email, name } = req.body;
     const { adminType } = req.decoded;
 
     let message
@@ -9,7 +9,7 @@ const createSupplier = async (req, res) => {
     let data
     try {
         if (adminType === 'SUPERADMIN') {
-            data = await supplierModel.create({ payType, vendorType, amout, phone, email, name })
+            data = await supplierModel.create({ address, phone, email, name })
             if (!data) throw new Error('New Supplier is not created.')
 
             message = 'Spplier created Successfully'
@@ -83,11 +83,11 @@ const getSupplierDetails = async (req, res) => {
 }
 
 const updateSupplier = async (req, res) => {
-    const { payType, vendorType, amout, phone, email, name, supplierId } = req.body;
+    const { address, phone, email, name, supplierId } = req.body;
     let message
     let status
     try {
-        const data = await supplierModel.findByIdAndUpdate(supplierId, { payType, vendorType, amout, phone, email, name }, { new: true })
+        const data = await supplierModel.findByIdAndUpdate(supplierId, { address, phone, email, name }, { new: true })
         if (data) {
             message = 'Supllier Updated Successfully'
             status = true
