@@ -61,13 +61,9 @@ const getUsers = async (req, res) => {
 
 const getUserDetails = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const { userId } = req.query;
 
-        let query = {
-            _id: userId
-        };
-
-        const user = await UserModel.findOne(query);
+        const user = await UserModel.findById(userId);
         if (!user) throw new Error('user data are not fetched.');
 
         res.status(200).json({
@@ -81,24 +77,12 @@ const getUserDetails = async (req, res) => {
 
 const updateUserDetails = async (req, res) => {
     try {
-        const { userId } = req.params;
-        const { firstName, surname, phone, address } = req.body
+      
+        const {userId, firstName, surname, phone, address } = req.body
 
-        let query = {
-            _id: userId
-        };
-
-
-
-        let user = await UserModel.findOne(query);
+        let user = await UserModel.findByIdAndUpdate(userId,{firstName, surname, phone, address},{new:true});
         if (!user) throw new Error('user data are not fetched.');
 
-        user.firstName = firstName || user.firstName
-        user.surname = surname || user.surname
-        user.phone = phone || user.phone
-        user.address = address || user.address
-
-        user = await user.save()
 
         res.status(200).json({
             meta: { message: 'User details are updated successfully.', status: true },

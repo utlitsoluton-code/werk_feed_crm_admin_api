@@ -4,11 +4,9 @@ const { createUserJOIMiddleware, getUsersJOIMiddleware, updateUserJOIMiddleware 
 
 const userRoutes = require('express').Router()
 
-userRoutes.route('/')
-    .post(jwtAdminVerify, createUserJOIMiddleware, createUser)
-    .get(jwtAdminVerify, getUsersJOIMiddleware, getUsers)
-userRoutes.route('/:userId')
-    .get(jwtAdminVerify, getUserDetails)
-    .patch(jwtAdminVerify, updateUserJOIMiddleware, updateUserDetails)
+userRoutes.post('/create-customer',jwtAdminVerify, createUserJOIMiddleware, createUser)
+userRoutes.get('/get-all-customer',jwtAdminVerify, getUsersJOIMiddleware, getUsers)
+userRoutes.get('/get-customer-details',jwtAdminVerify, getUserDetails)
+userRoutes.patch('/update-customer',jwtAdminVerify, updateUserJOIMiddleware, updateUserDetails)
 
 module.exports = userRoutes

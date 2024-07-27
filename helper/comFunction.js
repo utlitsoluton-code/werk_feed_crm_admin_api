@@ -1,7 +1,7 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const userModel = require("../module/common/users/model/userModel");
+const userModel = require("../module/common/customer/model/userModel");
 
 const jwtToken = async function (body) {
   const token = jwt.sign(body, process.env.jwtSecretKey, { expiresIn: "1y" });

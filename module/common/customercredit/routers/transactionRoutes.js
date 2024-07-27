@@ -4,12 +4,10 @@ const { createTransactionJOIMiddleware, updateTransactionJOIMiddleware, getTrans
 
 const transactionRoutes = require('express').Router()
 
-transactionRoutes.route('/')
-    .post(jwtAdminVerify, createTransactionJOIMiddleware, createTransaction)
-    .get(jwtAdminVerify, getTransJOIMiddleware, getAllTranactions)
-transactionRoutes.route('/:transId')
-    .get(jwtAdminVerify, getTransDetails)
-    .patch(jwtAdminVerify, updateTransactionJOIMiddleware, payTransaction)
+transactionRoutes.post('/creat-credit', jwtAdminVerify,  createTransaction)
+transactionRoutes.get('/get-all-credit',jwtAdminVerify,  getAllTranactions)
+transactionRoutes.get('/get-credit-details',jwtAdminVerify,getTransDetails)
+transactionRoutes.get('/get-credit-by-id', jwtAdminVerify, getTranactionsByUser)
+transactionRoutes.patch('/pay-credit',jwtAdminVerify,  payTransaction)
 
-transactionRoutes.get('/user/:userId', jwtAdminVerify, getTranactionsByUser)
 module.exports = transactionRoutes
