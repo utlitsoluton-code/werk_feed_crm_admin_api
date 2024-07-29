@@ -69,18 +69,21 @@ const getSupplierInvoiceDetails = async (req, res) => {
             data: transaction,
         });
     } catch (err) {
-        responseMessage(res, 500, false, err.message);
+        res.status(500).json({
+            status:500,
+            err:err.message
+        })
     }
 };
 
-const getSupplierInvoiceBySupplier = async (req, res) => {
+const getSupplierInvoiceByuserId = async (req, res) => {
     try {
-        const { supplierInvoiceId } = req.query;
+        const { userId } = req.query;
         const { page = 1, limit = 10 } = req.query;
         const skip = (page - 1) * limit;
 
         let query = {
-            userId: supplierInvoiceId
+            userId: userId
         };
 
         const transPromise = supplierInvoicePayModel.find(query).populate('productDetails').skip(skip).limit(limit);
@@ -128,6 +131,6 @@ module.exports={
     createSupplierInvoice,
     getAllSupplierInvoice,
     getSupplierInvoiceDetails,
-    getSupplierInvoiceBySupplier,
+    getSupplierInvoiceByuserId,
     paySupplierInvoice
 }

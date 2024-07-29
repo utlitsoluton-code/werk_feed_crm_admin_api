@@ -101,7 +101,10 @@ const payTransaction = async (req, res) => {
     let message
     let status
     try {
-       const userTrans=await TransactionModel.findByIdAndUpdate(transId,{summery,paymentType:Toatalmount-amount ===0 ? true : false,dueAmount:Toatalmount-amount},{new:true})
+       const userTrans=await TransactionModel.findByIdAndUpdate(
+        transId,
+        {summery,paymentType:Toatalmount-amount ===0 ? true : false,dueAmount:Toatalmount-amount},
+        {new:true})
        if (userTrans) {
          
          message='Amount Updated'
