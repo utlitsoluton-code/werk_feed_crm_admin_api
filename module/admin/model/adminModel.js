@@ -37,6 +37,16 @@ const adminModel = mongoose.model(
         country: String,
         postalCode: Number,
       },
+      tax_number:{
+        type:String
+      },
+      buss_reg_num:{
+        type:String
+      },
+      logo:{
+        type:String,
+        default:'https://w7.pngwing.com/pngs/798/436/png-transparent-computer-icons-user-profile-avatar-profile-heroes-black-profile-thumbnail.png'
+      }
     },
     { timestamps: true }
   )
