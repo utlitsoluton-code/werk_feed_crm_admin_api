@@ -1,17 +1,31 @@
 const mongoose = require('mongoose')
 const { userType } = require('../../../../helper/enums')
 
-module.exports = mongoose.model('product', 
+module.exports = mongoose.model('product',
     new mongoose.Schema(
         {
-            name:{
-                type:String
+            userId: {
+                type: mongoose.Schema.ObjectId,
+                ref: "user"
             },
-            price:{
-                type:Number
+            category: {
+                type: mongoose.Schema.ObjectId,
+                ref: "category"
             },
-            Stock:{
-                type:Number
+            product_Name: {
+                type: String
+            },
+            unit_cost_price: {
+                type: Number
+            },
+            unit_selling_price: {
+                type: Number
+            },
+            mark_up: {
+                type: Number
+            },
+            barcode: {
+                type: Number
             }
         },
         {
