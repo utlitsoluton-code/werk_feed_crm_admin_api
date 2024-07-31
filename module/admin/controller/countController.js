@@ -259,16 +259,16 @@ const getCashOutChart = async (req, res) => {
 
 const getCashOutData = async (req, res) => {
     try {
-        const data = await supplierInvoicePayModel.aggregate([
+        const data = await supplierInvoicePayModel.find(
             {
-                $match: {
+                
                     $or: [
                         { paymentType: true },
                         { dueAmount: { $gt: 0 } }
                     ],
                    
-                }
-            }])
+                
+            }).populate('userId')
             res.status(201).json({
                 message: 'Total Cash Out',
                 status: true,
