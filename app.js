@@ -7,7 +7,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 var cookieParser = require("cookie-parser");
 const CORS = process.env.NODE_ENV === 'production' ? process.env.HOST : '*'
-
+const crypto =require('crypto')
 app.use(cookieParser());
 app.use(cors());
 app.use(morgan("dev"));
