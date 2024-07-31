@@ -30,9 +30,16 @@ app.use((req, res, next) => {
 });
 app.use("/static", express.static(path.join(__dirname, "public")));
 
-app.get('/', (req,res)=> {
-  res.send('<h1>Server is running...</h1>')
-})
+// app.get('/', (req,res)=> {
+//   res.send('<h1>Server is running...</h1>')
+// })
+
+app.use(express.static(path.join(__dirname, 'public/dist')));
+
+// // Handle all other routes by serving the index.html file
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/dist', 'index.html'));
+});
 
 app.use(basePath, baseRouter);
 app.use((req, res, next) => {
