@@ -41,6 +41,14 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/dist', 'index.html'));
 });
 
+const crypto = require('crypto');
+
+app.use((req, res, next) => {
+  const nonce = crypto.randomBytes(16).toString('base64');
+  res.locals.nonce = nonce;
+  res.setHeader("Content-Security-Policy", `script-src 'self' 'nonce-${nonce}'`);
+  next();
+});
 app.use(basePath, baseRouter);
 app.use((req, res, next) => {
   const error = new Error("route Not found..");
