@@ -283,6 +283,31 @@ const getCashOutData = async (req, res) => {
     }
 }
 
+const getCashInData = async (req, res) => {
+    try {
+        const data = await customerModel.find(
+            {
+                
+                $or: [
+                    { paymentType: true },
+                    { dueAmount: { $ne: 0 } }
+                ]
+                   
+                
+            }).populate('userId')
+            res.status(201).json({
+                message: 'Total Cash Out',
+                status: true,
+                data: data
+            });
+    } catch (error) {
+        console.log({ error });
+        res.status(500).json({
+            status: 500,
+            error: error.message
+        })
+    }
+}
 
 
 
@@ -293,4 +318,5 @@ const getCashOutData = async (req, res) => {
 
 
 
-module.exports = { getCount, getCashInChart, getCashOutChart,getCashOutData }
+
+module.exports = { getCount, getCashInChart, getCashOutChart,getCashOutData,getCashInData }

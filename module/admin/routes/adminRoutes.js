@@ -1,7 +1,7 @@
 const adminRoutes = require("express").Router();
 const { jwtAdminVerify } = require("../../../helper/authHandler");
 const { login, getAdminProfile, logout, resetAdminPassword, updateAdminProfile, forgotPassword, setNewPassword } = require("../controller/adminController");
-const { getCount, getCashInChart, getCashOutChart, getCashOutData } = require("../controller/countController");
+const { getCount, getCashInChart, getCashOutChart, getCashOutData, getCashInData } = require("../controller/countController");
 
 const { adminLogin, resetAdminPasswordJoiMiddleware } = require("../service/adminService");
 
@@ -18,5 +18,6 @@ adminRoutes.get('/get-count',getCount)
 adminRoutes.get('/get-cah-in-chart',jwtAdminVerify,getCashInChart)
 adminRoutes.get('/get-cah-out-chart',jwtAdminVerify,getCashOutChart)
 adminRoutes.get('/get-cashout-data',jwtAdminVerify,getCashOutData)
+adminRoutes.get('/get-cashin-data',jwtAdminVerify,getCashInData)
 
 module.exports = adminRoutes;
