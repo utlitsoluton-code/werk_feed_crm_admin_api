@@ -35,7 +35,7 @@ const getAllSupplierInvoice = async (req, res) => {
         const skip = (page - 1) * limit;
         // console.log(query)
 
-        const transPromise = supplierInvoicePayModel.find().populate('productDetails').sort({ updatedAt: -1 }).skip(skip).limit(limit);
+        const transPromise = supplierInvoicePayModel.find().populate('productDetails').populate('userId').sort({ updatedAt: -1 }).skip(skip).limit(limit);
         const countPromise = supplierInvoicePayModel.countDocuments();
 
         const [trans, totalLength] = await Promise.all([transPromise, countPromise]);
@@ -61,7 +61,7 @@ const getSupplierInvoiceDetails = async (req, res) => {
             _id: supplierInvoiceId
         };
 
-        const transaction = await supplierInvoicePayModel.findOne(query).populate('productDetails');
+        const transaction = await supplierInvoicePayModel.findOne(query).populate('productDetails').populate('userId');
         if (!transaction) throw new Error('Supplier Invoice is not fetched.');
 
         res.status(200).json({
@@ -86,7 +86,7 @@ const getSupplierInvoiceByuserId = async (req, res) => {
             userId: userId
         };
 
-        const transPromise = supplierInvoicePayModel.find(query).populate('productDetails').skip(skip).limit(limit);
+        const transPromise = supplierInvoicePayModel.find(query).populate('productDetails').populate('userId').skip(skip).limit(limit);
         const countPromise = supplierInvoicePayModel.countDocuments(query);
 
         const [trans, totalLength] = await Promise.all([transPromise, countPromise]);
