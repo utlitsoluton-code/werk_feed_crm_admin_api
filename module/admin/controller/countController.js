@@ -296,7 +296,7 @@ const getCashInData = async (req, res) => {
                 
             }).populate('userId')
             res.status(201).json({
-                message: 'Total Cash Out',
+                message: 'Total Cash In',
                 status: true,
                 data: data
             });

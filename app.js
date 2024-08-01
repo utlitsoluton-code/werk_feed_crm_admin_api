@@ -47,7 +47,7 @@ app.use("/static", express.static(path.join(__dirname, "public/dist")));
 app.use(express.static(path.join(__dirname, 'public/dist')));
 
 // // Handle all other routes by serving the index.html file
-app.get('/', (req, res) => {
+app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/dist', 'index.html'));
 });
 
