@@ -30,7 +30,7 @@ const getAllTranactions = async (req, res) => {
         const skip = (page - 1) * limit;
         // console.log(query)
 
-        const transPromise = TransactionModel.find().populate('productDetails').sort({ updatedAt: -1 }).skip(skip).limit(limit);
+        const transPromise = TransactionModel.find().populate('productDetails').populate('userId').sort({ updatedAt: -1 }).skip(skip).limit(limit);
         const countPromise = TransactionModel.countDocuments();
 
         const [trans, totalLength] = await Promise.all([transPromise, countPromise]);
@@ -56,7 +56,7 @@ const getTransDetails = async (req, res) => {
             _id: transId
         };
 
-        const transaction = await TransactionModel.findOne(query).populate('productDetails');
+        const transaction = await TransactionModel.findOne(query).populate('productDetails').populate('userId');
         if (!transaction) throw new Error('transaction is not fetched.');
 
         res.status(200).json({
@@ -78,7 +78,7 @@ const getTranactionsByUser = async (req, res) => {
             userId: userId
         };
 
-        const transPromise = TransactionModel.find(query).populate('productDetails').skip(skip).limit(limit);
+        const transPromise = TransactionModel.find(query).populate('productDetails').populate('userId').skip(skip).limit(limit);
         const countPromise = TransactionModel.countDocuments(query);
 
         const [trans, totalLength] = await Promise.all([transPromise, countPromise]);

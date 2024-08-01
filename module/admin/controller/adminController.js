@@ -143,11 +143,11 @@ const resetAdminPassword = async (req, res) => {
 };
 
 const updateAdminProfile = async (req, res) => {
-  const { name, email, alternateMobile, mobile, country, state, city, street, postalCode,tax_number,buss_reg_num,logo } = req.body;
+  const { name, email, alternateMobile, mobile, country, state, city, street, postalCode,tax_number,buss_reg_num,logo,companyName } = req.body;
   console.log({ name });
   const { _id } = req.decoded;
   console.log({ _id });
-  console.log('sdasdfhgdshj', req.body);
+  // console.log('sdasdfhgdshj', req);
   let message
   let status
   try {
@@ -158,7 +158,7 @@ const updateAdminProfile = async (req, res) => {
       country: country,
       postalCode: postalCode
     }
-    const data = await adminModel.findByIdAndUpdate(_id, { name, email, alternateMobile, mobile, address,tax_number,buss_reg_num,logo }, { new: true })
+    const data = await adminModel.findByIdAndUpdate(_id, {companyName, name, email, alternateMobile, mobile, address,tax_number,buss_reg_num,logo }, { new: true })
     if (data) {
       message = 'Admin Profile Updated'
       status = true

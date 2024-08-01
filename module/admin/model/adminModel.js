@@ -46,6 +46,9 @@ const adminModel = mongoose.model(
       logo:{
         type:String,
         default:'https://w7.pngwing.com/pngs/798/436/png-transparent-computer-icons-user-profile-avatar-profile-heroes-black-profile-thumbnail.png'
+      },
+      companyName:{
+        type:String
       }
     },
     { timestamps: true }
