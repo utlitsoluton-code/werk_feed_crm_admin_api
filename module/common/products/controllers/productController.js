@@ -31,7 +31,7 @@ const getAllProduct = async (req, res) => {
             }
         }
         const data = await productModel.find(query).populate('category').skip(skip).limit(limit);
-        const countPromise = TransactionModel.countDocuments(query);
+        const countPromise = productModel.countDocuments(query);
         const [trans, totalLength] = await Promise.all([data, countPromise]);
 
         res.status(201).json({
