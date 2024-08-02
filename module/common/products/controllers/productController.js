@@ -1,11 +1,11 @@
 const productModel = require('../models/productModel')
 const productCategoryModel = require('../models/productCategoryModel')
 const createProduct = async (req, res) => {
-    const { product_Name, unit_cost_price, unit_selling_price, mark_up, barcode } = req.body
+    const { product_Name, unit_cost_price, unit_selling_price, mark_up, barcode,category } = req.body
     const { _id } = req.decoded;
 
     try {
-        const data = await productModel.create({ userId: _id, product_Name, unit_cost_price, unit_selling_price, mark_up, barcode })
+        const data = await productModel.create({ userId: _id, product_Name, unit_cost_price, unit_selling_price, mark_up, barcode,category })
         res.status(201).json({
             message: 'Product Created Successfully',
             status: true,
