@@ -28,6 +28,10 @@ module.exports = mongoose.model('transaction',
             ],
             summery:{
                 type:String
+            },
+            cash_sale:{
+                type:String,
+                default:''
             }
         },
         {

@@ -82,7 +82,22 @@ const updateProduct = async (req, res) => {
         });
     }
 }
-
+const deleteProduct=async (req,res)=>{
+    const {productId}=req.body;
+    try {
+        const data=await productModel.findByIdAndDelete(productId)
+        res.status(201).json({
+            message: 'Product Deleted',
+            status: true,
+            data: data
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            meta: { msg: error.message, status: false },
+        });
+    }
+}
 const createProductCategory = async (req, res) => {
     const { name } = req.body;
     const { _id } = req.decoded;
@@ -156,6 +171,7 @@ module.exports = {
     getAllProduct,
     getProductById,
     updateProduct,
+    deleteProduct,
     createProductCategory,
     getProductCategory,
     updateProductCategory,

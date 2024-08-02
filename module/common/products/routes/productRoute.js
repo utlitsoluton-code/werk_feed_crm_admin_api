@@ -1,4 +1,4 @@
-const { createProduct, getAllProduct, getProductById, updateProduct, createProductCategory, getProductCategory, updateProductCategory, deleteProductCategory } = require('../controllers/productController')
+const { createProduct, getAllProduct, getProductById, updateProduct, createProductCategory, getProductCategory, updateProductCategory, deleteProductCategory, deleteProduct } = require('../controllers/productController')
 
 const productRoutes = require('express').Router()
 
@@ -6,6 +6,7 @@ productRoutes.post('/create-product',createProduct)
 productRoutes.get('/get-all-product',getAllProduct)
 productRoutes.get('/get-product-by-id',getProductById)
 productRoutes.patch('/update-product',updateProduct)
+productRoutes.delete('/delete-product',deleteProduct)
 
 productRoutes.post('/create-product-category',createProductCategory)
 productRoutes.get('/get-all-product-category',getProductCategory)
