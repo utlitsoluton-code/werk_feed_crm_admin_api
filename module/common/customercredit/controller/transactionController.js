@@ -7,10 +7,10 @@ const TransactionModel = require("../model/transactionModel")
 const createTransaction = async (req, res) => {
     try {
 
-        const { summery, productDetails, Toatalmount, amount, userId } = req.body
+        const { summery, productDetails, amount, userId } = req.body
 
         const newTrans = await TransactionModel.create({
-            userId, summery, productDetails, Toatalmount, dueAmount: amount
+            userId, summery, productDetails, Toatalmount:amount, dueAmount: amount
         })
 
         // if (!newTrans) throw new Error(`${amountType} is not created.`)
