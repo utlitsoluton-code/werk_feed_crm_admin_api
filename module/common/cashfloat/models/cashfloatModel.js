@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+
 module.exports = mongoose.model('cashfloat',
     new mongoose.Schema(
         {
@@ -15,15 +16,15 @@ module.exports = mongoose.model('cashfloat',
             pay_to_vendor: {
                 type: Number
             },
-            expenses:{
-            type:Number
+            expenses: {
+                type: Number
             },
-            closing_cash_float:{
-            type:Number
+            closing_cash_float: {
+                type: Number
             },
-            cloashing_cash_balance:[
-            type:Number
-            ]
+            cloashing_cash_balance: {
+                type: Number
+            }
         },
         {
             timestamps: true
