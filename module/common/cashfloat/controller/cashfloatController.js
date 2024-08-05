@@ -18,8 +18,18 @@ const getDailyCashFloat = async (req, res) => {
     let message
     try {
         const date = new Date()
-        const currentDate = date.toISOString()
-        const data = await cashfloatModel.findOne({ createdAt: currentDate })
+        const currentDate = date.toISOString().split('T')[0];
+        console.log({currentDate});
+        const data = await cashfloatModel.findOne({
+            $expr: {
+                $eq: [
+                    { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    currentDate
+                ]
+            }
+        });
+
+        console.log({data});
         if (data) {
             message=`Cash Float Found on Date ${currentDate}`
         } else {
