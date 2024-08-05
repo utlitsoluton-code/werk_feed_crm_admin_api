@@ -35,4 +35,19 @@ const getDailyCashFloat = async (req, res) => {
         })
     }
 }
-module.exports = { createCashFloat, getDailyCashFloat }
+
+const getAllCashfloat=async (req,res)=>{
+    try {
+        const data=await cashfloatModel.find()
+        res.status(201).json({
+            message: 'Cash Float Created',
+            data: data
+        })
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        })
+    }
+}
+
+module.exports = { createCashFloat, getDailyCashFloat,getAllCashfloat }
