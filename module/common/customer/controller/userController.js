@@ -41,7 +41,7 @@ const getUsers = async (req, res) => {
             }
         }
 
-        const usersPromise = UserModel.find(query).skip(skip).limit(limit);
+        const usersPromise = UserModel.find(query).skip(skip).limit(limit).sort({ updatedAt: -1 });
         const countPromise = UserModel.countDocuments(query);
 
         const [users, totalLength] = await Promise.all([usersPromise, countPromise]);
