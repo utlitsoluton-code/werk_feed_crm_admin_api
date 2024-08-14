@@ -1,7 +1,7 @@
 "use strict";
 const { Types } = require("mongoose");
 const { adminModel } = require("../model/adminModel");
-const { jwtToken, randomFixedInteger, verificationKey } = require("../../../helper/comFunction");
+const { jwtToken, verificationKey } = require("../../../helper/comFunction");
 const md5 = require("md5");
 
 const login = async function (req, res) {
