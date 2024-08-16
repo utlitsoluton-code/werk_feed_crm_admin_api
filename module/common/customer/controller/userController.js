@@ -4,10 +4,10 @@ const UserModel = require("../model/userModel")
 
 const createUser = async (req, res) => {
     try {
-        const { firstName, surname, phone, email, address, userType } = req.body
+        const { firstName, surname, phone, email, address, userType,client_code } = req.body
 
         const newClient = await UserModel.create({
-            client_code: `CS${await randomFixedInteger(8)}`,
+            client_code:client_code,
             firstName,
             surname,
             phone,
@@ -118,10 +118,25 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const generateClientId=async (req,res)=>{
+    try {
+        const client_code=`CS${await randomFixedInteger(8)}`
+        res.status(201).json({
+            message:'Client code generated',
+            client_code:client_code
+        }) 
+    } catch (error) {
+        res.status(201).json({
+            error:error.message
+        })
+    }
+}
+
 module.exports = {
     createUser,
     getUsers,
     getUserDetails,
     updateUserDetails,
-    deleteUser
+    deleteUser,
+    generateClientId
 }
