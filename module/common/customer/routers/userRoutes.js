@@ -4,7 +4,7 @@ const { createUserJOIMiddleware, getUsersJOIMiddleware, updateUserJOIMiddleware 
 
 const userRoutes = require('express').Router()
 
-userRoutes.post('/create-customer',jwtAdminVerify, createUserJOIMiddleware, createUser)
+userRoutes.post('/create-customer',jwtAdminVerify, createUser)
 userRoutes.get('/get-all-customer',jwtAdminVerify, getUsersJOIMiddleware, getUsers)
 userRoutes.get('/get-customer-details',jwtAdminVerify, getUserDetails)
 userRoutes.patch('/update-customer',jwtAdminVerify, updateUserJOIMiddleware, updateUserDetails)
