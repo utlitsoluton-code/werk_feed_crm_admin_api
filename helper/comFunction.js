@@ -2,7 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const userModel = require("../module/common/customer/model/userModel");
-
+const supplierModel=require('../module/common/supplier/model/supplierModel')
 const jwtToken = async function (body) {
   const token = jwt.sign(body, process.env.jwtSecretKey, { expiresIn: "1y" });
   return token;
@@ -33,6 +33,20 @@ var randomFixedInteger = async function (length) {
   await randomFixedInteger(length) 
 };
 
+var randomFixedIntegerSuppllier = async function (length) {
+
+  const randomNumber = Math.floor(
+    Math.pow(10, length - 1) +
+    Math.random() * (Math.pow(10, length) - Math.pow(10, length - 1) - 1)
+  );
+
+  // check for unique client code
+  const check = await supplierModel.findOne({ client_code: `sp${randomNumber}`})
+
+  if(!check) return randomNumber
+  await randomFixedInteger(length) 
+};
+
 const responseMessage = (response, statusCode, statusType, message) => {
   return response.status(statusCode || 500).json(
     {
@@ -49,5 +63,6 @@ module.exports = {
   bcryptfun,
   randomFixedInteger,
   responseMessage,
-  verificationKey
+  verificationKey,
+  randomFixedIntegerSuppllier
 };

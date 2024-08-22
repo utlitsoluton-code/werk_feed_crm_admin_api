@@ -7,10 +7,10 @@ const TransactionModel = require("../model/transactionModel")
 const createTransaction = async (req, res) => {
     try {
 
-        const { summery, productDetails, amount, userId } = req.body
+        const { summery, productDetails, amount, userId,paymentType } = req.body
 
         const newTrans = await TransactionModel.create({
-            userId, summery, productDetails, Toatalmount:amount, dueAmount: amount
+            userId, summery, productDetails, Toatalmount:amount, dueAmount: amount,paymentType
         })
 
         // if (!newTrans) throw new Error(`${amountType} is not created.`)
@@ -30,7 +30,7 @@ const getAllTranactions = async (req, res) => {
         const skip = (page - 1) * limit;
         // console.log(query)
 
-        const transPromise = TransactionModel.find().populate('productDetails').populate('userId').sort({ updatedAt: -1 }).skip(skip).limit(limit);
+        const transPromise = TransactionModel.find({ dueAmount: { $gt: 0 } }).populate('productDetails').populate('userId').sort({ updatedAt: -1 });
         const countPromise = TransactionModel.countDocuments();
 
         const [trans, totalLength] = await Promise.all([transPromise, countPromise]);
@@ -75,10 +75,11 @@ const getTranactionsByUser = async (req, res) => {
         const skip = (page - 1) * limit;
 
         let query = {
-            userId: userId
+            userId: userId,
+            dueAmount: { $gt: 0 } 
         };
 
-        const transPromise = TransactionModel.find(query).populate('productDetails').populate('userId').skip(skip).limit(limit);
+        const transPromise = TransactionModel.find(query).populate('productDetails').populate('userId')
         const countPromise = TransactionModel.countDocuments(query);
 
         const [trans, totalLength] = await Promise.all([transPromise, countPromise]);

@@ -35,7 +35,7 @@ const getAllSupplierInvoice = async (req, res) => {
         const skip = (page - 1) * limit;
         // console.log(query)
 
-        const transPromise = supplierInvoicePayModel.find().populate('productDetails').populate('userId').sort({ updatedAt: -1 }).skip(skip).limit(limit);
+        const transPromise = supplierInvoicePayModel.find({ dueAmount: { $gt: 0 } }).populate('productDetails').populate('userId').sort({ updatedAt: -1 })
         const countPromise = supplierInvoicePayModel.countDocuments();
 
         const [trans, totalLength] = await Promise.all([transPromise, countPromise]);
@@ -83,10 +83,11 @@ const getSupplierInvoiceByuserId = async (req, res) => {
         const skip = (page - 1) * limit;
 
         let query = {
-            userId: userId
+            userId: userId,
+             dueAmount: { $gt: 0 }
         };
 
-        const transPromise = supplierInvoicePayModel.find(query).populate('productDetails').populate('userId').skip(skip).limit(limit);
+        const transPromise = supplierInvoicePayModel.find(query).populate('productDetails').populate('userId')
         const countPromise = supplierInvoicePayModel.countDocuments(query);
 
         const [trans, totalLength] = await Promise.all([transPromise, countPromise]);

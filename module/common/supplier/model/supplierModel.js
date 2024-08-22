@@ -3,7 +3,9 @@ const mongoose=require('mongoose')
 module.exports = mongoose.model('supplier',
     new mongoose.Schema(
         {
-           
+            client_code:{
+                type:String
+            },
             name:{
                 type:String
             },

@@ -9,8 +9,8 @@ module.exports = mongoose.model('transaction',
                 ref:"user"
              },
             paymentType:{
-                type:Boolean,
-                default:false
+                type:String,
+                default:'Credit' // Pay || Credit || Other || 
             },
             Toatalmount:{
                 type:Number

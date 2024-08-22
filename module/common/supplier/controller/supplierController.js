@@ -1,3 +1,4 @@
+const { randomFixedIntegerSuppllier } = require('../../../../helper/comFunction');
 const supplierModel = require('../model/supplierModel')
 
 const createSupplier = async (req, res) => {
@@ -132,10 +133,25 @@ const deleteSupplier = async (req, res) => {
     }
 }
 
+const generateSupplierId=async (req,res)=>{
+    try {
+        const client_code=`CS${await randomFixedIntegerSuppllier(8)}`
+        res.status(201).json({
+            message:'Client code generated',
+            client_code:client_code
+        }) 
+    } catch (error) {
+        res.status(201).json({
+            error:error.message
+        })
+    }
+}
+
 module.exports = {
     createSupplier,
     getAllSupplier,
     getSupplierDetails,
     updateSupplier,
-    deleteSupplier
+    deleteSupplier,
+    generateSupplierId
 }
