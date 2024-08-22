@@ -1,5 +1,6 @@
 const { responseMessage, randomFixedInteger } = require("../../../../helper/comFunction")
 const { userType: typeOfUser } = require("../../../../helper/enums")
+const userModel = require("../model/userModel")
 const UserModel = require("../model/userModel")
 
 const createUser = async (req, res) => {
@@ -131,6 +132,26 @@ const generateClientId=async (req,res)=>{
         })
     }
 }
+const payAmount=async (req,res)=>{
+    const {amount,userId}=req.body;
+    try {
+        const data=await userModel.findByIdAndUpdate(userId,
+            { $inc: { paidAmount: amount } },
+            {new:true}
+        )
+        if (!data) {
+            return res.status(401).json({message:`User not found ${userId}`})
+        }
+        res.status(201).json({
+            message:`Paid amount ${amount}`,
+            data:data
+        })
+    } catch (error) {
+        res.status(500).json({
+            err:error.message
+        })
+    }
+}
 
 module.exports = {
     createUser,
@@ -138,5 +159,6 @@ module.exports = {
     getUserDetails,
     updateUserDetails,
     deleteUser,
-    generateClientId
+    generateClientId,
+    payAmount
 }

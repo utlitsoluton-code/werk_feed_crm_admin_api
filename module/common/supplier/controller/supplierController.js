@@ -147,11 +147,33 @@ const generateSupplierId=async (req,res)=>{
     }
 }
 
+const paySupplierAmount=async (req,res)=>{
+    const {amount,userId}=req.body;
+    try {
+        const data=await supplierModel.findByIdAndUpdate(userId,
+            { $inc: { paidAmount: amount } },
+            {new:true}
+        )
+        if (!data) {
+            return res.status(401).json({message:`User not found ${userId}`})
+        }
+        res.status(201).json({
+            message:`Paid amount ${amount}`,
+            data:data
+        })
+    } catch (error) {
+        res.status(500).json({
+            err:error.message
+        })
+    }
+}
+
 module.exports = {
     createSupplier,
     getAllSupplier,
     getSupplierDetails,
     updateSupplier,
     deleteSupplier,
-    generateSupplierId
+    generateSupplierId,
+    paySupplierAmount
 }

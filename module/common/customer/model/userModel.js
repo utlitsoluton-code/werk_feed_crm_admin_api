@@ -26,6 +26,10 @@ module.exports = mongoose.model('user',
             },
             address: {
                 type: String
+            },
+            paidAmount:{
+                type:Number,
+                default:0
             }
         },
         {

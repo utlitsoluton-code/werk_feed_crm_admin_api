@@ -25,6 +25,10 @@ module.exports = mongoose.model('supplier',
            
             address:{
                 type:String
+            },
+            paidAmount:{
+                type:Number,
+                default:0
             }
 
         },
