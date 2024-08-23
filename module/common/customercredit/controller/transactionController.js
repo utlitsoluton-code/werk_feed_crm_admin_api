@@ -23,7 +23,6 @@ const createTransaction = async (req, res) => {
         responseMessage(res, 500, false, err.message)
     }
 }
-
 const getAllTranactions = async (req, res) => {
     try {
         const { page = 1, limit = 10 } = req.query;
@@ -47,7 +46,6 @@ const getAllTranactions = async (req, res) => {
         responseMessage(res, 500, false, err.message);
     }
 };
-
 const getTransDetails = async (req, res) => {
     try {
         const { transId } = req.query;
@@ -67,7 +65,6 @@ const getTransDetails = async (req, res) => {
         responseMessage(res, 500, false, err.message);
     }
 };
-
 const getTranactionsByUser = async (req, res) => {
     try {
         const { userId } = req.query;
@@ -96,7 +93,6 @@ const getTranactionsByUser = async (req, res) => {
         responseMessage(res, 500, false, err.message);
     }
 }
-
 const payTransaction = async (req, res) => {
     const { transId, amount, summery, Toatalmount } = req.body
     let message
@@ -122,7 +118,6 @@ const payTransaction = async (req, res) => {
         responseMessage(res, 500, false, err.message);
     }
 };
-
 const createCashSales = async (req, res) => {
     try {
 
@@ -185,7 +180,6 @@ const getCashSaleDetails = async (req, res) => {
         responseMessage(res, 500, false, err.message);
     }
 };
-
 const getCashSaleByUser = async (req, res) => {
     try {
         const { userId } = req.query;
@@ -214,6 +208,7 @@ const getCashSaleByUser = async (req, res) => {
         responseMessage(res, 500, false, err.message);
     }
 }
+
 module.exports = {
     createTransaction,
     getAllTranactions,

@@ -309,6 +309,16 @@ const getCashInData = async (req, res) => {
     }
 }
 
+const createCashIn=async (req,res)=>{
+    const {}=req.body;
+    try {
+        
+    } catch (error) {
+        res.status(500).json({
+            error:error.message
+        })
+    }
+}
 
 
 

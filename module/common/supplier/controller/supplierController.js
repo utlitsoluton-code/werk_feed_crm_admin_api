@@ -135,9 +135,9 @@ const deleteSupplier = async (req, res) => {
 
 const generateSupplierId=async (req,res)=>{
     try {
-        const client_code=`CS${await randomFixedIntegerSuppllier(8)}`
+        const client_code=`sp${await randomFixedIntegerSuppllier(8)}`
         res.status(201).json({
-            message:'Client code generated',
+            message:'supplier code generated',
             client_code:client_code
         }) 
     } catch (error) {
